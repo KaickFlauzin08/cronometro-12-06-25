@@ -59,4 +59,23 @@ document.getElementById('bnt-color').onclick = function() {
   indice = (indice + 1) % cores.length;
 };
 
+
+//mudar imagem com transição suave
+let imagemAtual = 1;
+
+function trocarImagem() {
+    const imagem = document.getElementById('imagem');
+    imagem.style.opacity = 0; // Faz a imagem desaparecer suavemente
+
+    setTimeout(() => {
+        if (imagemAtual === 1) {
+            imagem.src = './img/gordaons.webp';
+            imagemAtual = 2;
+        } else {
+            imagem.src = './img/wallpaper2.jpg';
+            imagemAtual = 1;
+        }
+        imagem.style.opacity = 1; // Faz a nova imagem aparecer suavemente
+    },10); // Tempo para a imagem desaparecer antes de trocar
+}
   
