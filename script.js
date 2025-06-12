@@ -47,3 +47,16 @@ function formatarTempo(segundosTotais, milissegundos) {
 function atualizaDisplay() {
     display.textContent = formatarTempo(sec, milissegundos);
 }
+
+
+//botao mudando de cor
+
+const cores = ['#2c3e50','#fff','#000000','#808080'];
+let indice = 0;
+
+document.getElementById('bnt-color').onclick = function() {
+  document.body.style.backgroundColor = cores[indice];
+  indice = (indice + 1) % cores.length;
+};
+
+  
