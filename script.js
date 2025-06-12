@@ -1,52 +1,49 @@
-//Declarando variáveis
-let sec =0;
+let sec = 0;
+let milissegundos = 0;
 let intervalo = null;
 
-//Elementos do DOM para manipulação
+const display = document.getElementById('display');
+const start = document.getElementById('start');
+const pause = document.getElementById('pause');
+const reset = document.getElementById('reset');
 
-const display = document.getElementById("display");
-const start = document.getElementById("start");
-const pause = document.getElementById("pause");
-const reset = document.getElementById("reset");
-
-//Botão para iniciar o cronômetro
-start.addEventListener("click", iniciarCronometro);
+start.addEventListener('click', iniciarCronometro);
+pause.addEventListener('click', pausarCronometro);
+reset.addEventListener('click', resetarCronometro);
 
 function iniciarCronometro() {
-    if (intervalo) return; 
-    // guarda em intervalo o passar
-        intervalo = setInterval (() => {
-        sec++;
-        atualizarDisplay();
+    if (intervalo) return; // Evita iniciar múltiplos cronômetros
 
-    },1000);
+    intervalo = setInterval(() => {
+        milissegundos += 10;
+        if (milissegundos >= 1000) {
+            milissegundos = 0;
+            sec++;
+        }
+        atualizaDisplay();
+    }, 10);
 }
 
-// Botão para parar o cronômetro
-pause.addEventListener("click", pauseCronometro);
-function pauseCronometro() {
+function pausarCronometro() {
     clearInterval(intervalo);
-    intervalo = null;
+    intervalo = null; // Reseta o intervalo
+    atualizaDisplay(); // Atualiza o display para refletir a pausa
 }
 
-
-// Botão para reiniciar o cronômetro
-reset.addEventListener("click", resetarCronometro);
-function resetarCronometro(){
-    pauseCronometro(intervalo);
-    sec = 0;
-    atualizarDisplay();
+function resetarCronometro() {
+    pausarCronometro(); // Pausa o cronômetro se estiver rodando
+    sec = 0; // Reseta os segundos
+    milissegundos = 0; // Reseta os milissegundos
+    atualizaDisplay(); // Atualiza o display para mostrar 00:00.000
 }
 
-
-//Função para FORMATAR O TEMPO
-function formartarTempo(segundosTotais) {
-    const  min = Math.floor(segundosTotais / 60);
-    const  sec = segundosTotais % 60;
-    return `${String(min).padStart(2, '0')}: ${String(sec).padStart(2, '0')}`;
+function formatarTempo(segundosTotais, milissegundos) {
+    const min = Math.floor(segundosTotais / 60);
+    const sec = segundosTotais % 60;
+    const ms = Math.floor(milissegundos / 10); // Exibe apenas dois dígitos de milissegundos
+    return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}:${String(ms).padStart(2, '0')}`;
 }
 
-//Função para atualizar o display do cronômetro
-function atualizarDisplay() {
-    display.textContent = formartarTempo(sec);
+function atualizaDisplay() {
+    display.textContent = formatarTempo(sec, milissegundos);
 }
